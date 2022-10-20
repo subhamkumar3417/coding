@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool comp(string a,string b)
+{
+   /* if(a.size()>b.size())
+    {
+        return false;
+    }
+    return true;*/
+    return a.size()<b.size();// isko krne par segmentaion fault nhi aarha 4th test case me
+}
+bool check(string a,string b)
+{
+    if(a.size()==(b.size()+1))
+    {
+        int i=0,j=0;
+        while(i<a.size())// why not j<b.size() see any example
+        {
+            if(a[i]==b[j])
+            {
+                i++;
+                j++;
+            }
+            else
+            {
+                i++;
+            }
+        }
+        if(i==a.size() && j==b.size())
+        {
+            return true;
+        }
+    }
+    return false;
+}
+int longestStrChain(vector<string> &arr)
+{
+    sort(arr.begin(),arr.end(),comp);
+    
+    int n=arr.size(),maxi=1;
+    vector<int>dp(n,1);
+    for(int i=1;i<n;i++)
+    {
+        for(int j=i-1;j>=0;j--)
+        {
+            if(check(arr[i],arr[j]))
+            {
+                dp[i]=max(dp[i],dp[j]+1);//see ye bhul jaata hai
+                maxi=max(maxi,dp[j]+1);
+            }
+        }
+    }
+    return maxi;
+}
