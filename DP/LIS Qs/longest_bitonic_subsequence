@@ -1,0 +1,90 @@
+#include<bits/stdc++.h>
+using namespace std;
+int LongestBitonicSequence1stway(vector<int>arr) (O(N^2)) solution
+{
+int i, j;
+int n=arr.size();
+   vector<int>front(n,1);
+   for (i = 1; i < n; i++)
+      for (j = i-1; j >=0i; j--)
+         if (arr[i] > arr[j] && front[i] < front[j] + 1)
+            front[i] = lis[j] + 1;
+  
+   /* Allocate memory for lds and initialize LDS values for
+      all indexes */
+   int *lds = new int [n];
+   for (i = 0; i < n; i++)
+      lds[i] = 1;
+  
+   /* Compute LDS values from right to left */
+   for (i = n-2; i >= 0; i--)
+      for (j = n-1; j > i; j--)
+         if (arr[i] > arr[j] && lds[i] < lds[j] + 1)
+            lds[i] = lds[j] + 1;
+  
+  
+   /* Return the maximum value of lis[i] + lds[i] - 1*/
+   int max = lis[0] + lds[0] - 1;
+   for (i = 1; i < n; i++)
+     if (lis[i] + lds[i] - 1 > max)
+         max = lis[i] + lds[i] - 1;
+   return max;
+
+}
+
+int LongestBitonicSequence2ndway(vector<int>arr)//O(NLOGN)
+	{
+  
+  //here i am maintaining count as well as maintaing longest increasing subsequence till particular element
+	    int n=arr.size();
+	    int maxi=1;
+    vector<int>ans;
+    vector<int>dp(n,1);
+    ans.push_back(arr[0]);
+    for(int i=1;i<n;i++)
+    {
+        if(arr[i]>(ans.back()))
+        {
+            ans.push_back(arr[i]);
+            maxi++;
+            dp[i]=maxi;
+        }
+        else
+        {
+            auto it=lower_bound(ans.begin(),ans.end(),arr[i])-ans.begin();
+            ans[it]=arr[i];
+            if(it!=0)
+            {
+                dp[i]=it+1;
+            }
+        }
+    }
+    maxi=1;
+    vector<int>ans1;
+    vector<int>dp1(n,1);
+    ans1.push_back(arr[n-1]);
+    for(int i=n-2;i>=0;i--)
+    {
+        if(arr[i]>(ans1.back()))
+        {
+            ans1.push_back(arr[i]);
+            maxi++;
+            dp1[i]=maxi;
+        }
+        else
+        {
+            auto it=lower_bound(ans1.begin(),ans1.end(),arr[i])-ans1.begin();
+            ans1[it]=arr[i];
+            if(it!=0)
+            {
+                dp1[i]=it+1;
+            }
+        }
+    }
+    maxi=1;
+    for(int i=0;i<n;i++)
+    {
+        maxi=max(maxi,abs(dp[i]+dp1[i]-1));
+    }
+return maxi;
+	}
