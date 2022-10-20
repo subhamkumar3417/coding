@@ -1,0 +1,48 @@
+void findLargest(int arr[], int n)
+{
+    // We first sort the array so that all divisors
+    // of a number are before it.
+    sort(arr, arr+n);
+ 
+    // To store count of divisors of all elements
+    vector <int> divCount(n, 1);
+ 
+    // To store previous divisor in result
+    vector <int> prev(n, -1);
+ 
+    // To store index of largest element in maximum
+    // size subset
+    int max_ind = 0;
+ 
+    // In i'th iteration, we find length of chain
+    // ending with arr[i]
+    for (int i=1; i<n; i++)
+    {
+        // Consider every smaller element as previous
+        // element.
+        for (int j=0; j<i; j++)
+        {
+            if (arr[i]%arr[j] == 0)
+            {
+                if (divCount[i] < divCount[j] + 1)
+                {
+                    divCount[i] = divCount[j]+1;
+                    prev[i] = j;
+                }
+            }
+        }
+ 
+        // Update last index of largest subset if size
+        // of current subset is more.
+        if (divCount[max_ind] < divCount[i])
+            max_ind = i;
+    }
+ 
+    // Print result
+    int k = max_ind;
+    while (k >= 0)
+    {
+        cout << arr[k] << " ";
+        k = prev[k];
+    }
+}
