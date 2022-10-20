@@ -1,0 +1,104 @@
+#include<bits/stdc++.h>
+using namespace std;
+//5 4 11 1 16 8
+/*void LIS(int arr[], int n)// for printing in O(N^2) solution
+{
+    int maxi=INT_MIN;
+    vector<int>aux(n,1);
+    vector<int>print;
+    for(int i=0;i<n;i++)
+    {
+    	print.push_back(i);
+    	
+	}
+    for(int i=0;i<n;i++)
+    {
+        for(int j=i-1;j>=0;j--)
+        {
+            if(arr[i]>arr[j] && aux[i]<(aux[j]+1))
+            {
+                aux[i]=aux[j]+1;
+                print[i]=j;
+            }
+        }
+    }
+    int point=0;
+    for(int i=0;i<n;i++)
+    {
+    	if(maxi<aux[i])
+    	{
+    		maxi=aux[i];
+    		point=i;
+		}
+	}
+	if(print[point]==point)//IF ONLY ONE ELEMENT
+	{
+		cout<<arr[0];
+	}
+	else
+	{
+		int i=point;
+		while((print[i])!=i)
+		{
+			cout<<arr[i]<<" ";
+			i=print[i];
+		}
+		cout<<arr[i]<<" ";
+	}
+}*/
+void LIS(int arr[], int n)//we have used find and lower bound and for printing in O(NLOGN) solution
+{    
+    int maxi=1;
+    vector<int>ans;
+    vector<int>print;
+    ans.push_back(arr[0]);
+    //0 1 2 3 4 5
+    //5 4 11 1 16 8
+    for(int i=0;i<n;i++)
+    {
+    	print.push_back(i);
+	}
+	int point=0;
+    for(int i=1;i<n;i++)
+    {
+        if(arr[i]>(ans.back()))
+        {
+        	int x=find(arr,arr+n,ans.back())-arr;
+            ans.push_back(arr[i]);
+            print[i]=x;
+            maxi++;
+            point=i;
+        }
+        else
+        {
+            auto it=lower_bound(ans.begin(),ans.end(),arr[i])-ans.begin();
+            ans[it]=arr[i];
+        }
+    }
+    if(print[point]==point)
+    {
+    	cout<<arr[0]<<endl;
+	}
+	else
+	{
+		int i=point;
+		while(print[i]!=i)
+		{
+			cout<<arr[i]<<" ";
+			i=print[i];
+		}
+		cout<<arr[i]<<endl;
+	}
+}
+
+/* Working of Lower Bound - An iterator to the lower bound of val in the range(10 20 30 40)-35 then return 3. If all the elements in the range compare less than val, 
+the function returns last. 
+If all the elements in the range are larger than val, the function returns a pointer to the first element. */
+int main()
+{
+	
+	int a[6]={5,4,11,1,16,8};
+	int n=6;
+	LIS(a,n);
+	return 0;
+}
