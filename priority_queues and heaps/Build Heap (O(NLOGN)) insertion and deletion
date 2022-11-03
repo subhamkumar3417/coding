@@ -1,0 +1,35 @@
+void insert(vector<int>&ans,int i,int x)
+{
+    ans[i]=x;
+    while(i>1)
+    {
+        if(ans[i]>ans[i/2])
+        {
+            swap(ans[i],ans[i/2]);
+            i=i/2;
+        }
+        else
+        {
+            return;
+        }
+    }
+}
+vector<int> buildHeap(vector<int> arr, int n)
+{	
+    vector<int>ans(n+1),ans1;
+    ans[0]=0;
+    ans[1]=arr[0];
+	for(int i=1;i<n;i++)
+    {
+        check(ans,i+1,arr[i]);
+    }
+    /*for(auto i:ans)
+    {
+        cout<<i<<" ";
+    }*/
+    for(int i=1;i<=n;i++)
+    {
+        ans1.push_back(ans[i]);
+    }
+    return ans1;
+}
